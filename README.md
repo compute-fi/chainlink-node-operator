@@ -65,7 +65,7 @@ Hosted on  :
 http://34.125.213.96/
 `
 
-# Request compute steps
+# Request compute steps (Quickstart)
 
 1. Deploy the RequestComputeGPU.sol and RequestOutputLog.sol and fill them with Goerli LINK tokens 5-10.
 
