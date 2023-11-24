@@ -1,6 +1,6 @@
 
 
-# Commands
+# Commands to Host Chainlink Node
 
 Elevate to Root 
 sudo su -
@@ -69,6 +69,10 @@ http://34.125.213.96/
 
 1. Deploy the RequestComputeGPU.sol and RequestOutputLog.sol and fill them with Goerli LINK tokens 5-10.
 
-oracle_address: 0xd0905cB54D3934F4c746AE1c15de4662310993C0
-jobID: 4dfdc7e76f114404a71489de493d88f4
+2. Look for `requestCompute` function and enter the following creds and URL for compute.
+
+oracle_address: `0xd0905cB54D3934F4c746AE1c15de4662310993C0`
+
+jobID: `4dfdc7e76f114404a71489de493d88f4`
+
 example fileURL: `https://raw.githubusercontent.com/madhukar123456/kaggle-kernel/main/python-code/mistraltest.ipynb`
