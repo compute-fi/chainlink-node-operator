@@ -1,9 +1,9 @@
 type = "directrequest"
 schemaVersion = 1
 name = "Get > Uint256 - (TOML)"
-externalJobID = "4dfdc7e7-6f11-4404-a714-89de493d88f4"
+externalJobID = "aa491301-949d-4a4e-93d4-60bdf12c372f"
 maxTaskDuration = "0s"
-contractAddress = "0xd0905cB54D3934F4c746AE1c15de4662310993C0"
+contractAddress = "0x33238F4C8C5C71E1A7a2802e290079665f532FbA"
 minContractPaymentLinkJuels = "0"
 observationSource = """
     decode_log   [type="ethabidecodelog"
@@ -21,7 +21,7 @@ observationSource = """
                   abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
                   data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\":   $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"
                   ]
-    submit_tx    [type="ethtx" to="0xd0905cB54D3934F4c746AE1c15de4662310993C0" data="$(encode_tx)"]
+    submit_tx    [type="ethtx" to="0x33238F4C8C5C71E1A7a2802e290079665f532FbA" data="$(encode_tx)"]
 
     decode_log -> decode_cbor -> fetch -> parse -> encode_data -> encode_tx -> submit_tx
 """

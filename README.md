@@ -23,6 +23,7 @@ sudo apt install -y postgresql-client
 
 Test Database Connection to Google Cloud SQL
 pg_isready -d chainlinkdb2 -h 35.223.13.41 -p 5432 -U postgres
+pg_isready -d chainlink_6228 -h dpg-cl7kr6f6e7vc739tp9ug-a.oregon-postgres.render.com -p 5432 -U postgres
 
 Create .env config file
 ROOT=/chainlink
@@ -40,6 +41,9 @@ docker run -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-file=.env smartcont
 
 Install NGINX
 apt-get install nginx
+
+cd /etc/nginx/sites-enabled
+vim default
 
 Modify NGINX Server Block
 
@@ -67,12 +71,12 @@ http://34.125.213.96/
 
 # Request compute steps (Quickstart)
 
-1. Deploy the RequestComputeGPU.sol and RequestOutputLog.sol and fill them with Goerli LINK tokens 5-10.
+1. Deploy the computeCaller.sol and RequestOutputLog.sol and fill them with Goerli LINK tokens 5-10.
 
-2. Look for `requestCompute` function and enter the following creds and URL for compute.
+2. Look for `callAPI` function and enter the following creds and URL for compute.
 
-oracle_address: `0xd0905cB54D3934F4c746AE1c15de4662310993C0`
+oracle_address: `0x33238F4C8C5C71E1A7a2802e290079665f532FbA`
 
-jobID: `4dfdc7e76f114404a71489de493d88f4`
+jobID: `aa491301949d4a4e93d460bdf12c372f`
 
 example fileURL: `https://raw.githubusercontent.com/madhukar123456/kaggle-kernel/main/python-code/mistraltest.ipynb`
