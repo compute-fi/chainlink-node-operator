@@ -71,12 +71,31 @@ http://34.125.213.96/
 
 # Request compute steps (Quickstart)
 
+`https://goerli.etherscan.io/address/0xfF9aa21FC6aA2fEae61cC776f3F2B23f0Ad5dE4e`
+
 1. Deploy the computeCaller.sol and RequestOutputLog.sol and fill them with Goerli LINK tokens 5-10.
 
 2. Look for `callAPI` function and enter the following creds and URL for compute.
 
 oracle_address: `0x33238F4C8C5C71E1A7a2802e290079665f532FbA`
 
-jobID: `aa491301949d4a4e93d460bdf12c372f`
+jobID compute call: `aa491301949d4a4e93d460bdf12c372f`
 
-example fileURL: `https://raw.githubusercontent.com/madhukar123456/kaggle-kernel/main/python-code/mistraltest.ipynb`
+
+simple example fileURL: `https://raw.githubusercontent.com/madhukar123456/Mastering-Coding/main/Python/hello_world.py`
+
+AI model example fileURL: `https://raw.githubusercontent.com/madhukar123456/kaggle-kernel/main/python-code/mistraltest.ipynb`
+
+3. Status call `callStatus`
+
+oracle_address: `0x33238F4C8C5C71E1A7a2802e290079665f532FbA`
+
+status call jobID: `6c071cdf64374795a5ea4e238505da46`
+
+computeID: from 2. 
+
+4. Log call `callLog`
+
+oracle_address: `0x33238F4C8C5C71E1A7a2802e290079665f532FbA`
+
+log call jobID: `e74117d2ec984537a3a3db4dba6acf86`
