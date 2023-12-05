@@ -16,12 +16,13 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
         uint256 fee;
         string computeID;
         string logCID;
-        bytes32 transactionHash;
+        string transactionHash;
         address caller; // New field to store the caller's address
     }
 
     mapping(address => uint256) public computeBalances;
     mapping(string => mapping(address => ComputeTransaction)) public computeTransactions;
+    mapping(address => string[]) public stringArrays;
     uint256 public computePrice;
     using Chainlink for Chainlink.Request;
 
@@ -44,7 +45,7 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
         uint256  fee,
         string indexed computeID,
         string  logCID,
-        bytes32 indexed transactionHash,
+        string indexed transactionHash,
         address indexed caller
     );
 
@@ -58,6 +59,20 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
   receive() external payable {
     computeBalances[msg.sender] += msg.value;
   }
+  
+
+    function addString(string memory value) internal {
+        stringArrays[msg.sender].push(value);
+    }
+
+    function getString(uint256 index) public view returns (string memory) {
+        require(index < stringArrays[msg.sender].length, "Index out of bounds");
+        return stringArrays[msg.sender][index];
+    }
+
+    function getAllStrings() public view returns (string[] memory) {
+        return stringArrays[msg.sender];
+    }
 
   // to change the compute price after deployment
   function setComputePrice(uint256 _price) public onlyOwner {
@@ -183,8 +198,7 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
       // Function to add a new compute transaction
     function addTransaction(
         string memory _computeID,
-        uint256 _computeTime,
-        string memory _logCID
+        string memory _transactionHash
     ) external {
         // Check if the transaction already exists for the caller
         require(bytes(computeTransactions[_computeID][msg.sender].computeID).length == 0, "Transaction already exists");
@@ -193,16 +207,18 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
         ComputeTransaction memory newTransaction = ComputeTransaction({
             requestDate: block.timestamp,
             status: "Pending",
-            computeTime: _computeTime,
+            computeTime: 0,
             fee: computePrice,
             computeID: _computeID,
-            logCID: _logCID,
-            transactionHash: currentTransactionHash,
+            logCID: "Pending",
+            transactionHash: _transactionHash,
             caller: msg.sender
         });
 
         // Add the new transaction to the mapping using the transaction hash and caller's address
         computeTransactions[_computeID][msg.sender] = newTransaction;
+
+        addString(_computeID);
 
                 // Emit the event with the struct values
         emit TransactionUpdated(
@@ -218,13 +234,20 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
     }
 
     // Function to update the status and fee of a compute transaction
-    function updateTransaction(string memory _computeID, string memory _status, string memory _logCID) external {
+    function updateTransaction(
+    string memory _computeID, 
+    string memory _status, 
+    string memory _logCID,
+    uint256 _computeTime
+    ) external {
         // Check if the transaction exists for the caller
         require(bytes(computeTransactions[_computeID][msg.sender].computeID).length != 0, "Transaction does not exist");
 
         // Update the status and fee of the transaction
         computeTransactions[_computeID][msg.sender].status = _status;
         computeTransactions[_computeID][msg.sender].logCID = _logCID;
+        computeTransactions[_computeID][msg.sender].computeTime = _computeTime;
+
 
         // Emit the event with the updated struct values
         emit TransactionUpdated(
