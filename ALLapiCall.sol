@@ -65,13 +65,13 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
         stringArrays[msg.sender].push(value);
     }
 
-    function getString(uint256 index) public view returns (string memory) {
+    function getString(uint256 index, address _userwallet) public view returns (string memory) {
         require(index < stringArrays[msg.sender].length, "Index out of bounds");
-        return stringArrays[msg.sender][index];
+        return stringArrays[_userwallet][index];
     }
 
-    function getAllStrings() public view returns (string[] memory) {
-        return stringArrays[msg.sender];
+    function getAllStrings(address _userwallet) public view returns (string[] memory) {
+        return stringArrays[_userwallet];
     }
 
   // to change the compute price after deployment
