@@ -3,6 +3,8 @@ pragma solidity ^0.8.19;
 
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+
 
 // Quick and easy solution for Compute balance. For the mock Compute solution. 
 // Store yield in compute contract inside a mapping. Use that yield for compute fees.
@@ -48,10 +50,24 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
         string indexed transactionHash,
         address indexed caller
     );
+       address public nftContractAddress;  // Address of the specific NFT contract
+
+    // Event to log when a function is executed
+    event FunctionExecuted(address user, uint256 tokenId);
+
+    // Modifier to check if the caller owns the specified NFT
+    modifier onlyNFTOwner(uint256 _tokenId) {
+        require(
+            IERC721(nftContractAddress).ownerOf(_tokenId) == msg.sender,
+            "You don't own the specified NFT"
+        );
+        _;
+    }
 
 
-  constructor() ConfirmedOwner(msg.sender) {
+  constructor(address _nftContractAddress) ConfirmedOwner(msg.sender) {
         setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
+        nftContractAddress = _nftContractAddress;
         computePrice = 1; // Default price, can be changed by owner
   }
 
@@ -83,8 +99,9 @@ contract ComputeContract is ChainlinkClient, ConfirmedOwner {
   function callAPI(
        address _oracle,
         string memory _jobId,
-        string memory _fileUrl
-  ) public {
+        string memory _fileUrl,
+        uint256 _tokenId
+  ) public onlyNFTOwner(_tokenId){
     require(computeBalances[msg.sender] >= computePrice, "Insufficient balance");
     computeBalances[msg.sender] -= computePrice;
     currentTransactionHash = keccak256(abi.encodePacked(block.timestamp, msg.sender, blockhash(block.number - 1)));
